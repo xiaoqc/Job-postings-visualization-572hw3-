@@ -1,0 +1,32 @@
+<html>
+<head>
+<link rel="stylesheet" href="style.css" />
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/d3.v3.min.js"></script>
+<script type="text/javascript" src="dataProcess.js"></script>
+<script type="text/javascript" src="lib/topojson.v0.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="mainContainer">
+</div>
+
+<script type="text/javascript" src="vis.js"></script>
+
+<script type="text/javascript">
+parameter = [];
+index = 1;
+var dataProcessInstance = new dataProcess();
+var visInstance = new Visulization();
+var data = dataProcessInstance.getData(parameter, index);
+visInstance.runVisulize(data, index);
+
+
+
+</script>
+</body>
+</html>
+
+
