@@ -118,6 +118,7 @@ dataProcess = function(){
 			default:
 				console.log("not a compatible queryIndex");
 		}
+		console.log("query url is: " + url);
 		return url;
 	}
 
