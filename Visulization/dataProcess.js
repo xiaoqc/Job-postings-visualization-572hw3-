@@ -1,6 +1,6 @@
 dataProcess = function(){
 	function generateQuery(queryParameter, queryIndex){
-		console.log("start generating query url");
+		//console.log("start generating query url");
 		var url;
 		//generate query url here
 		switch(queryIndex) {
@@ -118,7 +118,7 @@ dataProcess = function(){
 		var res = [];
 		switch(queryIndex) {
 			case 1:
-				console.log("query1");
+				//console.log("query1");
 				for (var i = 0; i < rawData.grouped.Area.groups.length; i++) {
 					if (rawData.grouped.Area.groups[i].doclist.docs[0].Area == "n/a") {
 						continue;
@@ -133,7 +133,7 @@ dataProcess = function(){
 				}
 				break;
 			case 2:
-				console.log("query2");
+				//console.log("query2");
 				for (var i = 0; i < rawData.grouped.Area.groups.length; i++) {
 					if (rawData.grouped.Area.groups[i].doclist.docs[0].Area == "n/a" ||
 						rawData.grouped.Area.groups[i].doclist.numFound < 102) {
@@ -440,20 +440,140 @@ dataProcess = function(){
 		return res;
 	}
 
+	function getUrls(queryParameter, queryIndex) {
+		var urls = [];
+		var field;
+		var value;
+		switch(queryIndex) {
+			case 1:
+				console.log("query for question a");
+				field = queryParameter[0];
+				value = queryParameter[1];
+				switch(field) {
+					case "company":
+						urls.push(generateQuery(queryParameter, 1));
+						break;
+					case "jobType":
+						urls.push(generateQuery(queryParameter, 2));
+						break;
+					case "salary":
+						if (value == "4000") {
+							urls.push(generateQuery(queryParameter, 3));
+						} else {
+							urls.push(generateQuery(queryParameter, 4));
+						}
+						break;
+					default:
+						console.log("not a compatible query!");
+				}
+				break;
+			case 2:
+				console.log("query for question b");
+				field = queryParameter[0];
+				value = queryParameter[1];
+				switch(field) {
+					case "Manpower":
+						urls.push(generateQuery(queryParameter, 5));
+						urls.push(generateQuery(queryParameter, 6));
+						urls.push(generateQuery(queryParameter, 7));
+						urls.push(generateQuery(queryParameter, 8));
+						break;
+					default:
+						console.log("not a compatible query!");
+				}
+				break;
+			case 3:
+				console.log("query for quetion c");
+				field = queryParameter[0];
+				value = queryParameter[1];
+				switch(field) {
+					case "company":
+						if (value == "Manpower") {
+							urls.push(generateQuery(queryParameter, 9));
+						} else if (value == "Activos") {
+							urls.push(generateQuery(queryParameter, 10));
+						} else if (value == "Sertempo") {
+							urls.push(generateQuery(queryParameter, 11));
+						} else if (value == "Bancamia"){
+							urls.push(generateQuery(queryParameter, 12));
+						} else {
+							console.log("not a compatible query!");
+						}
+						break;
+					default:
+						console.log("not a compatible query!");
+				}
+				break;
+			case 4:
+				console.log("query for question d");
+				field = queryParameter[0];
+				switch(field) {
+					case "business":
+						urls.push(generateQuery(queryParameter, 13));
+						urls.push(generateQuery(queryParameter, 14));
+						urls.push(generateQuery(queryParameter, 15));
+						urls.push(generateQuery(queryParameter, 16));
+						break;
+					case "industrial":
+						urls.push(generateQuery(queryParameter, 17));
+						urls.push(generateQuery(queryParameter, 18));
+						urls.push(generateQuery(queryParameter, 19));
+						urls.push(generateQuery(queryParameter, 20));
+						break;
+					default:
+						console.log("not a compatible query!");
+				}
+				break;
+			default:
+				console.log("not a compatible query!");
 
+		}
+		//console.log("urls.length is:" + urls.length);
+		//console.log("urls is : " + urls);
+		return urls;
+	}
 
-
+	function sleep(milliseconds) {
+  		var start = new Date().getTime();
+  		for (var i = 0; i < 1e7; i++) {
+    		if ((new Date().getTime() - start) > milliseconds){
+      		break;
+    		}
+  		}
+	}
 
 //***************************************public method************************************************
 
+	// this.getData = function(queryParameter, queryIndex){
+	// 	var url = generateQuery(queryParameter, queryIndex);
+	// 	//url = "data/query1.json";
+	// 	d3.json(url, function(d){
+	// 		var data = modelData(d, queryIndex);
+	// 		//console.log(data);
+	// 		visInstance.visualize(data, queryIndex);
+	// 	})
+	// }
 	this.getData = function(queryParameter, queryIndex){
-		var url = generateQuery(queryParameter, queryIndex);
-		url = "data/query1.json";
-		d3.json(url, function(d){
-			var data = modelData(d, queryIndex);
-			//console.log(data);
-			//visInstance.test();
-			visInstance.visualize(data, queryIndex);
-		})
+		var res = [];
+		var urls = getUrls(queryParameter, queryIndex)
+		console.log("urls is " + urls);
+		//url = "data/query1.json";
+		for (i = 0; i < urls.length; i++) {
+			console.log("fetching data for urls[" + i + "]: " + urls[i]);
+			d3.json(urls[i], function(d){
+				//console.log(d);
+				var data = modelData(d, queryIndex);
+				// console.log("data is:");
+				// console.log(data);
+				res.push(data);
+				console.log("done fetching data for urls[" + i + "]");
+				if (res.length == urls.length) {
+					console.log("res is :");
+					console.log(res);
+					visInstance.visualize(res, queryIndex);
+				}
+			})
+			sleep(300);
+		}
 	}
 }
