@@ -5,6 +5,7 @@
 <script type="text/javascript" src="lib/d3.v3.min.js"></script>
 <script type="text/javascript" src="dataProcess.js"></script>
 <script type="text/javascript" src="lib/topojson.v0.min.js"></script>
+<script type="text/javascript" src="vis.js"></script>
 
 </head>
 
@@ -12,16 +13,15 @@
 
 <div id="mainContainer">
 </div>
-
-<script type="text/javascript" src="vis.js"></script>
+<script type="text/javascript" src="map.js"></script>
 
 <script type="text/javascript">
-parameter = ["Adecco"];
-index = 20;
-var dataProcessInstance = new dataProcess();
 var visInstance = new Visulization();
-var data = dataProcessInstance.getData(parameter, index);
-visInstance.runVisulize(data, index);
+visInstance.createWorldMap();
+
+parameter = ["Adecco"];
+index = 1;
+visInstance.query(parameter, index);
 </script>
 </body>
 </html>

@@ -1,15 +1,4 @@
 dataProcess = function(){
-
-	function run(queryParameter, queryIndex){
-		console.log("run");
-		var url = generateQuery(queryParameter, queryIndex);
-		//url = "dataset/test1.json";
-		d3.json(url, function(d){
-			//console.log(d);
-			return modelData(d, queryIndex);
-		})
-	}
-
 	function generateQuery(queryParameter, queryIndex){
 		console.log("start generating query url");
 		var url;
@@ -445,8 +434,8 @@ dataProcess = function(){
 		}
 		
 		
-		console.log(res);
-		console.log(res.length);
+		//console.log(res);
+		console.log("dataset size is " + res.length);
 		console.log("finished processing");
 		return res;
 	}
@@ -458,6 +447,13 @@ dataProcess = function(){
 //***************************************public method************************************************
 
 	this.getData = function(queryParameter, queryIndex){
-		return run(queryParameter, queryIndex);
+		var url = generateQuery(queryParameter, queryIndex);
+		url = "data/query1.json";
+		d3.json(url, function(d){
+			var data = modelData(d, queryIndex);
+			//console.log(data);
+			//visInstance.test();
+			visInstance.visualize(data, queryIndex);
+		})
 	}
 }
