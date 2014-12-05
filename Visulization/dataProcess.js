@@ -137,7 +137,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -152,7 +153,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -167,7 +169,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -182,7 +185,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -196,7 +200,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -210,7 +215,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -224,7 +230,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -238,7 +245,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -252,7 +260,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -266,7 +275,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -280,7 +290,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -294,7 +305,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -309,7 +321,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -324,7 +337,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -339,7 +353,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -354,7 +369,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -369,7 +385,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -384,7 +401,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -399,7 +417,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
@@ -414,7 +433,8 @@ dataProcess = function(){
 					var record = {
 						name : rawData.grouped.Area.groups[i].doclist.docs[0].Area,
 						lat : rawData.grouped.Area.groups[i].doclist.docs[0].latitude,
-						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude
+						lon : rawData.grouped.Area.groups[i].doclist.docs[0].longitude,
+						radius : rawData.grouped.Area.groups[i].doclist.numFound
 					};
 					res.push(record);
 				}
