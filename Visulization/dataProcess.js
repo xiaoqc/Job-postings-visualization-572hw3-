@@ -542,6 +542,21 @@ dataProcess = function(){
   		}
 	}
 
+	function getURL(queryParameter, queryIndex){
+		var prefix = "dataset/query";
+		var tmp = [];
+		if (queryIndex == 1){
+			tmp.push(prefix + queryIndex + "/" + queryParameter[1] + ".json");
+		} else if (queryIndex == 2){
+
+		} else if (queryIndex == 3){
+
+		} else if (queryIndex == 4){
+
+		}
+		return tmp;
+	}
+
 //***************************************public method************************************************
 
 	// this.getData = function(queryParameter, queryIndex){
@@ -554,7 +569,7 @@ dataProcess = function(){
 	// 	})
 	// }
 	this.getData = function(queryParameter, queryIndex){
-		var res = [];
+		/*var res = [];
 		var urls = getUrls(queryParameter, queryIndex)
 		console.log("urls is " + urls);
 		//url = "data/query1.json";
@@ -567,6 +582,21 @@ dataProcess = function(){
 				// console.log(data);
 				res.push(data);
 				console.log("done fetching data for urls[" + i + "]");
+				if (res.length == urls.length) {
+					console.log("res is :");
+					console.log(res);
+					visInstance.visualize(res, queryIndex);
+				}
+			})
+			sleep(300);
+		}*/
+		var res = [];
+		var urls = getURL(queryParameter, queryIndex)
+		for (i = 0; i < urls.length; i++) {
+			console.log("fetching data for urls[" + i + "]: " + urls[i]);
+			d3.json(urls[i], function(d){
+				var data = modelData(d, queryIndex);
+				res.push(data);
 				if (res.length == urls.length) {
 					console.log("res is :");
 					console.log(res);

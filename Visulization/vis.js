@@ -32,6 +32,7 @@ Visulization = function(){
 	}
 	prePosition = null;
 	worldMapInstance = null;
+	mapEventFlag = null;
 	
 
 	//initialize variables
@@ -116,7 +117,7 @@ Visulization = function(){
 
 		node = svg.selectAll(".node");                		//set of all nodes 
 
-		
+		mapEventFlag = false;
 		nodeData = [];
 		prePosition = new Map();
 		dataProcessInstance = new dataProcess();
@@ -125,6 +126,8 @@ Visulization = function(){
 	//tick function for nodes
 	function tick(e) {
 	    var k = .1 * e.alpha;                      			// Push nodes toward their designated focus. 
+	    if (mapEventFlag)
+	    	k = 0.1;
 	    nodeData.forEach(function(d, i) {  
 	    	var coord = worldMapInstance.getClusterCoordinates({
 		    		"lat" : d.lat,
@@ -149,13 +152,14 @@ Visulization = function(){
 	        	d.y = Math.max(d.radius, Math.min(windowHeight - d.radius, d.y)); 
 	        	return d.y;
 	        });
+	    //mapEventFlag = false;
 	}  
 
 	//format data to required style
 	function initializeData(data){
 		//console.log(data);
 		var maxNum = 0;
-		data.forEach(function(d){
+		data[0].forEach(function(d){
 			var tmplat = parseFloat(d.lat);
 			var tmplon = parseFloat(d.lon);
 			if (tmplon != NaN && tmplat != NaN){
@@ -248,6 +252,7 @@ Visulization = function(){
 
 	//map change event
 	function updateNode(){
+		mapEventFlag = true;
 		force.start();
 	}
 
@@ -298,11 +303,17 @@ Visulization = function(){
 	function generateLayout(data, queryIndex){
 		//console.log(data);
 		initializeData(data);		
-
-		//setTimeout(function(d){
+		mapEventFlag = false;
 		pos.moveToFront();
-		transit1()
-		//}, 1000);
+		if (queryIndex == 1){
+			transit1();
+		} else if (queryIndex == 2){
+			transit2();
+		} else if (queryIndex == 3){
+			transit3();
+		} else if (queryIndex == 4){
+			transit4();
+		}
 	}
 
 	function retrieveData(parameter, index){

@@ -21,7 +21,7 @@ WorldMap = function(svgInstance){
 	function initialize(){
 
     projection = d3.geo.azimuthal()
-        .scale(380)
+        .scale(480)
         .origin([-71.03,42.37])
         .mode("orthographic")
         .translate([640, window.innerHeight / 2]);
@@ -31,11 +31,11 @@ WorldMap = function(svgInstance){
 
     // TODO fix d3.geo.azimuthal to be consistent with scale
     scale = {
-      orthographic: 380,
-      stereographic: 380,
-      gnomonic: 380,
-      equidistant: 380 / Math.PI * 2,
-      equalarea: 380 / Math.SQRT2
+      orthographic: 480,
+      stereographic: 480,
+      gnomonic: 480,
+      equidistant: 480 / Math.PI * 2,
+      equalarea: 480 / Math.SQRT2
     };
 
     path = d3.geo.path()
@@ -53,24 +53,26 @@ WorldMap = function(svgInstance){
           .text(function(d) { return d.properties.name; });
     });
 
-    /*zoom = d3.behavior.zoom()
-      .scaleExtent([0.2, 8])
-      .on("zoom", function() {
-        visInstance.mapChangeEvent();
-        //console.log("translate(" + d3.event.translate.join(",") + ")scale(" + d3.event.scale + ")");
-        svg.attr("transform", "translate(" + d3.event.translate.join(",") + ")scale(" + d3.event.scale + ")");
-      });
-    svg.call(zoom);*/
+    /*var zoom = d3.behavior.zoom()
+    .on("zoom",function() {
+        console.log("triggle zoom")
+        mapG.attr("transform","translate("+ 
+            d3.event.translate.join(",")+")scale("+d3.event.scale+")");
+        mapG.selectAll("path")  
+            .attr("d", path.projection(projection)); 
+    });
+
+    mapG.call(zoom)*/
   }
 
   function mousedown() {
+    visInstance.mapChangeEvent();
     m0 = [d3.event.pageX, d3.event.pageY];
     o0 = projection.origin();
     d3.event.preventDefault();
   }
 
   function mousemove() {
-    visInstance.mapChangeEvent();
     if (m0) {
       var m1 = [d3.event.pageX, d3.event.pageY],
           o1 = [o0[0] + (m0[0] - m1[0]) / 8, o0[1] + (m1[1] - m0[1]) / 8];
