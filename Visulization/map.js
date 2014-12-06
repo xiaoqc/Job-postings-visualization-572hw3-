@@ -21,10 +21,10 @@ WorldMap = function(svgInstance){
 	function initialize(){
 
     projection = d3.geo.azimuthal()
-        .scale(480)
-        .origin([-71.03,42.37])
+        .scale(430)
+        .origin([-90, 10])
         .mode("orthographic")
-        .translate([640, window.innerHeight / 2]);
+        .translate([640, (window.innerHeight - 80) / 2]);
 
     circle = d3.geo.greatCircle()
         .origin(projection.origin());
@@ -51,6 +51,7 @@ WorldMap = function(svgInstance){
           .attr("d", clip);
       feature.append("svg:title")
           .text(function(d) { return d.properties.name; });
+      feature.moveToBack();
     });
 
     /*var zoom = d3.behavior.zoom()
@@ -98,9 +99,26 @@ WorldMap = function(svgInstance){
   }
 
   function getCoordinates(geoCode) {
-    var coord = projection([geoCode.long, geoCode.lat]);
+    var coord = projection([geoCode.lon, geoCode.lat]);
     return coord;
   }
+
+  function getGeoLocation(coord){
+    //console.log(coord.x + " " + coord.y)
+    var geo = projection.invert([coord[0], coord[1]]);
+    return geo;
+  }
+
+  //move element to the back of its parent's children
+  d3.selection.prototype.moveToBack = function() { 
+      return this.each(function() { 
+          var firstChild = this.parentNode.firstChild; 
+          if (firstChild) { 
+              this.parentNode.insertBefore(this, firstChild); 
+          } 
+      });    //move component to the down of svg
+  };
+
 
 
 
@@ -116,6 +134,10 @@ WorldMap = function(svgInstance){
 	this.getClusterCoordinates = function(geo){
 		return getCoordinates(geo);
 	}
+
+  this.getClusterGeoLocation = function(coord){
+    return getGeoLocation(coord);
+  }
 }
 
 

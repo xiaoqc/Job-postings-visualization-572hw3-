@@ -1,6 +1,6 @@
 body {
   background: url(texture-noise.png);
-  background-color: #ddd;
+  background-color: #bbb;
   overflow: hidden;
   margin: 0;
   font-size: 14px;
@@ -92,6 +92,6 @@ a:hover {
 
 
 path {
-  fill: #555;
+  fill: #222;
   stroke: #fff;
 }

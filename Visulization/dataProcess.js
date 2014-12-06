@@ -437,6 +437,7 @@ dataProcess = function(){
 		//console.log(res);
 		console.log("dataset size is " + res.length);
 		console.log("finished processing");
+		//console.log(res)
 		return res;
 	}
 
@@ -548,11 +549,13 @@ dataProcess = function(){
 		if (queryIndex == 1){
 			tmp.push(prefix + queryIndex + "/" + queryParameter[1] + ".json");
 		} else if (queryIndex == 2){
-
+			for (var i = 1; i <= 5; i++)
+				tmp.push(prefix + queryIndex + "/" + i + ".json");
 		} else if (queryIndex == 3){
-
+			tmp.push(prefix + queryIndex + "/" + queryParameter[1] + ".json");
 		} else if (queryIndex == 4){
-
+			for (var i = 1; i <= 5; i++)
+				tmp.push(prefix + queryIndex + "/" + i + ".json");
 		}
 		return tmp;
 	}
@@ -595,11 +598,33 @@ dataProcess = function(){
 		for (i = 0; i < urls.length; i++) {
 			console.log("fetching data for urls[" + i + "]: " + urls[i]);
 			d3.json(urls[i], function(d){
-				var data = modelData(d, queryIndex);
+				//console.log(d);
+				var index = 0;
+				if (queryIndex == 1){
+					if (queryParameter[0] == "company")
+						index = 1;
+					else if (queryParameter[0] == "jobType")
+						index = 2;
+					else if (queryParameter[0] == "salary"){
+						if (queryParameter[1] == 4000)
+							index = 3;
+						if (queryParameter[2] == 8000)
+							index = 4
+					}
+				} else if (queryIndex == 2){
+					index = 5
+				} else if (queryIndex == 3){
+					index = 9
+				} else if (queryIndex == 4){
+					index = 13;
+				}
+				var data = modelData(d, index);
+				//console.log(data)
 				res.push(data);
 				if (res.length == urls.length) {
-					console.log("res is :");
-					console.log(res);
+					//console.log(res.length + " " + urls.length)
+					//console.log("res is :");
+					//console.log(res);
 					visInstance.visualize(res, queryIndex);
 				}
 			})

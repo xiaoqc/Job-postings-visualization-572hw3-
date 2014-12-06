@@ -3,7 +3,7 @@ Visulization = function(){
 	windowHeight = null;
 	cScale = null;
 	rScale = null;
-	//svg = null;
+	svg = null;
 	gradNode = null;
 	colorData = null;
 	nodeData = [];
@@ -33,19 +33,22 @@ Visulization = function(){
 	prePosition = null;
 	worldMapInstance = null;
 	mapEventFlag = null;
+	mapCenter = null;
+	date = null;
+	info = null;
 	
 
 	//initialize variables
 	function initialize(){
 		windowWidth = window.innerWidth;
-		windowHeight = window.innerHeight;
+		windowHeight = window.innerHeight - 80;
 
 		//decide color of node
 		cScale = d3.scale.category20();
 
 		//decide the radius of node
 		rScale = d3.scale.linear()
-			.range([2,10]);
+			.range([3,10]);
 
 		//return color of edge
 		linkColorScale = d3.scale.linear()         
@@ -57,7 +60,7 @@ Visulization = function(){
 		    .attr("width",windowWidth)
 		    .attr("height",windowHeight)
 		    .attr("preserveAspectRatio", "xMidYMid")      //for map
-		    .on("mousemove", mousemove);
+		    //.on("mousemove", mousemove);
 
 		//place to show mouse coordinate
 		pos = svg.append("text")
@@ -118,9 +121,21 @@ Visulization = function(){
 		node = svg.selectAll(".node");                		//set of all nodes 
 
 		mapEventFlag = false;
+		mapCenter = [windowHeight / 2 + 100, windowHeight / 2];
+
 		nodeData = [];
 		prePosition = new Map();
 		dataProcessInstance = new dataProcess();
+		date = svg.append("text")
+			.attr("x", windowWidth - 400)
+			.attr("y", 100)
+			.attr("font-size", 30)
+			.attr("fill", "black")
+		info = svg.append("text")
+			.attr("x", windowWidth - 400)
+			.attr("y", 200)
+			.attr("font-size", 30)
+			.attr("fill", "black")
 	}
 
 	//tick function for nodes
@@ -128,10 +143,10 @@ Visulization = function(){
 	    var k = .1 * e.alpha;                      			// Push nodes toward their designated focus. 
 	    if (mapEventFlag)
 	    	k = 0.1;
-	    nodeData.forEach(function(d, i) {  
+	    node.each(function(d, i) {  
 	    	var coord = worldMapInstance.getClusterCoordinates({
 		    		"lat" : d.lat,
-		    		"long" : d.lon
+		    		"lon" : d.lon
 		    	});
 		    d.coordX = coord[0];
 		    d.coordY = coord[1];
@@ -157,24 +172,36 @@ Visulization = function(){
 
 	//format data to required style
 	function initializeData(data){
-		//console.log(data);
 		var maxNum = 0;
-		data[0].forEach(function(d){
-			var tmplat = parseFloat(d.lat);
-			var tmplon = parseFloat(d.lon);
-			if (tmplon != NaN && tmplat != NaN){
-				var coord = worldMapInstance.getClusterCoordinates({
-		    		"lat" : d.lat,
-		    		"long" : d.lon
-		    	});
-		    	d.coordX = coord[0];
-		    	d.coordY = coord[1];
-		    	if (!(isNaN(d.coordX) || isNaN(d.coordY))){
-		    		d.rad = Math.sqrt(d.radius);
-		    		nodeData.push(d);
-					maxNum = Math.max(maxNum, d.radius);					
-		    	}				
-			}
+		data.forEach(function(item, i){
+			nodeData.push([]);
+			item.forEach(function(d){
+				var tmplat = parseFloat(d.lat);
+				var tmplon = parseFloat(d.lon);
+				if (tmplon != NaN && tmplat != NaN){
+					var coord = worldMapInstance.getClusterCoordinates({
+			    		"lat" : d.lat,
+			    		"lon" : d.lon
+			    	});
+			    	var flag = true;
+			    	d.coordX = coord[0];
+			    	d.coordY = coord[1];
+			    	var dX = d.coordX - 640;
+			    	var dY = d.coordY - (window.innerHeight - 80) / 2;
+			    	var dist = Math.sqrt(dX * dX + dY * dY)
+			    	if (dist > 430)
+			    		flag = false;
+			    	if (tmplon > 0){
+			    		flag = false;
+			    	}
+			    	if (flag && !(isNaN(d.coordX) || isNaN(d.coordY))){
+			    		d.rad = Math.sqrt(d.radius);
+			    		nodeData[i].push(d);
+						maxNum = Math.max(maxNum, d.radius);					
+			    	}				
+				}
+			})
+			//console.log(nodeData[i])
 		})
 		rScale.domain([0, Math.sqrt(maxNum)]);		
 	}
@@ -182,11 +209,15 @@ Visulization = function(){
 	//draw component and deal with trasition process
 	//index indicate which day's data is used to execute transition
 	function transit1(){
-		node = node.data(nodeData, function(d, i){
+		node = node.data(nodeData[0], function(d, i){
 				return d.lon + " " + d.lat;
 			});
 		node.enter()
 			.append("circle")
+			.attr("fill", function(d, i){
+	        	//return cScale(i);
+	            return "url(#grad" + 0 + ")";
+	        })
 
 
 		/*node.filter(function(d, i){
@@ -206,30 +237,209 @@ Visulization = function(){
 				return d.coordY;
 			})
 			.attr("r", function(d){
-				return rScale(d.rad);
+				return Math.ceil(rScale(d.rad));
 			})
-			.attr("fill", function(d, i){
-	        	//return cScale(i);
-	            return "url(#grad" + 0 + ")";
-	        })
 		node.exit()
 			.transition()
 			.duration(500)
 			.attr("r", 0)
 			.remove();
-		force.nodes(nodeData)
+		force.nodes(nodeData[0])
 			.start();
 	}
+
+	function transit2(index){
+		node = node.data(nodeData[index], function(d,i){				
+				return d.name//i//d.coordx + " " + d.coordy;
+			});
+		node.enter()
+			.append("circle")
+			.attr("r", 0)
+			.attr("fill", function(d, i){
+	        	//return cScale(i);
+	            return "url(#grad" + 6 + ")";
+	        })
+		node.moveToFront();
+		if (index == 0)
+			date.text("2012 Winter")
+		else if (index == 1)
+			date.text("2013 Spring")
+		else if (index == 2)
+			date.text("2013 Summer")
+		else if (index == 3)
+			date.text("2013 Winter")
+		
+
+
+		node.each(function(d){
+	    	if (prePosition.has(d.name)){
+	    		d.x = prePosition.get(d.name).x;
+	    		d.y = prePosition.get(d.name).y;
+	    	}
+	    	/*d3.select(this)
+	    		.attr("cx",windowWidth / 2)
+	    		.attr("cy", windowHeight / 2);*/
+	    });
+
+
+
+		node.transition()
+			.duration(500)
+			/*.attr("cx", function(d){
+				return d.coordX;
+			})
+			.attr("cy", function(d){
+				return d.coordY;
+			})*/
+			.attr("r", function(d){
+				return Math.ceil(rScale(d.rad));
+			})
+		node.exit()
+			.transition()
+			.duration(500)
+			.attr("r", 0)
+			.remove();
+		force.nodes(nodeData[index])
+			.start();
+
+		console.log("transition " + (index + 1) + " finishes")
+		if (++index < nodeData.length){
+			setTimeout(function(){
+				resetData();
+				transit2(index);
+			}, 5000);
+		}
+	}
+
+	function transit3(){
+		node = node.data(nodeData[0], function(d, i){
+				return d.lon + " " + d.lat;
+			});
+		node.enter()
+			.append("circle")
+			.attr("fill", function(d, i){
+	        	//return cScale(i);
+	            return "url(#grad" + 18 + ")";
+	        })
+
+
+		/*node.filter(function(d, i){
+			if (i % 20 == 0){
+				d3.select(this)
+					.attr("class", "comet");
+			}
+		})*/
+
+
+		node.transition()
+			.duration(500)
+			.attr("cx", function(d){
+				return d.coordX;
+			})
+			.attr("cy", function(d){
+				return d.coordY;
+			})
+			.attr("r", function(d){
+				return Math.ceil(rScale(d.rad));
+			})
+		node.exit()
+			.transition()
+			.duration(500)
+			.attr("r", 0)
+			.remove();
+		force.nodes(nodeData[0])
+			.start();
+	}
+
+	function transit4(index){
+		//node.remove();
+		node = node.data(nodeData[index], function(d,i){				
+				return d.name//i//d.coordx + " " + d.coordy;
+			});
+		node.enter()
+			.append("circle")
+			.attr("r", 0)
+			.attr("fill", function(d, i){
+	        	//return cScale(i);
+	            return "url(#grad" + 4 + ")";
+	        })
+		node.moveToFront();
+		if (index == 0)
+			date.text("2012 Winter")
+		else if (index == 1)
+			date.text("2013 Spring")
+		else if (index == 2)
+			date.text("2013 Summer")
+		else if (index == 3)
+			date.text("2013 Winter")
+
+
+		node.each(function(d){
+	    	if (prePosition.has(d.name)){
+	    		d.x = prePosition.get(d.name).x;
+	    		d.y = prePosition.get(d.name).y;
+	    	}
+	    });
+
+
+		node.transition()
+			.duration(500)
+			/*.attr("cx", function(d){
+				return d.coordX;
+			})
+			.attr("cy", function(d){
+				return d.coordY;
+			})*/
+			.attr("r", function(d){
+				return Math.ceil(rScale(d.rad));
+			})
+		node.exit()
+			.transition()
+			.duration(500)
+			.attr("r", 0)
+			.remove();
+		force.nodes(nodeData[index])
+			.start();
+
+
+			
+
+
+
+		console.log("transition " + (index + 1) + " finishes")
+		if (++index < nodeData.length){
+			setTimeout(function(){
+				resetData();
+				transit4(index);
+			}, 5000);
+		}
+	}
+
 
 	//reset data for next iteration
 	function resetData(){
 		prePosition.clear();
-		nodeData.forEach(function(d){
-			prePosition.set(d.id, {
+		node.each(function(d){
+			prePosition.set(d.name, {
 				x : d.x,
 				y : d.y,
 			})
 		})
+	}
+
+	//remove node
+	function removeNode(){
+		node = svg.selectAll(".node");                		//set of all nodes 
+
+		mapEventFlag = false;
+		mapCenter = [windowHeight / 2 + 100, windowHeight / 2];
+
+		nodeData = [];
+		prePosition = new Map();
+		dataProcessInstance = new dataProcess();
+
+		d3.selectAll("circle")
+			.remove();
 	}
 
 
@@ -253,6 +463,20 @@ Visulization = function(){
 	//map change event
 	function updateNode(){
 		mapEventFlag = true;
+		/*var coord = worldMapInstance.getClusterGeoLocation(mapCenter);
+		console.log(coord);
+		node.each(function(d){
+			var tmplat = parseFloat(d.lat);
+			var tmplon = parseFloat(d.lon);
+			if (Math.abs(tmplon - coord[0]) >= 85 || Math.abs(tmplat - coord[1]) >= 85){
+				d3.select(this)
+					.attr("r", 0);
+			} else {
+				console.log("hehe")
+				d3.select(this)
+					.attr("r", 3)
+			}
+		})*/
 		force.start();
 	}
 
@@ -292,8 +516,8 @@ Visulization = function(){
 	//when move over show the coordinate
 	function mousemove(){
 		var ary = d3.mouse(this);
-		pos.attr("x", ary[0] + 2)
-			.attr("y", ary[1] + 2)
+		pos.attr("x", 10)//ary[0] + 10)
+			.attr("y", 10)//ary[1] + 2)
 			//.attr("x", 100)
 			//.attr("y", 100)
 			.text(Math.round(ary[0]) + ", " + Math.round(ary[1]))
@@ -301,22 +525,33 @@ Visulization = function(){
 
 
 	function generateLayout(data, queryIndex){
+		removeNode();
+		date.text("");
+
 		//console.log(data);
-		initializeData(data);		
+		//console.log(data.length)
+		initializeData(data);
+		/*nodeData.forEach(function(d){
+			console.log(d)
+		})	
+		console.log(nodeData)	*/
 		mapEventFlag = false;
 		pos.moveToFront();
 		if (queryIndex == 1){
 			transit1();
 		} else if (queryIndex == 2){
-			transit2();
+			transit2(0);
 		} else if (queryIndex == 3){
 			transit3();
 		} else if (queryIndex == 4){
-			transit4();
+			transit4(0);
 		}
 	}
 
 	function retrieveData(parameter, index){
+		var tmp = "Query " + index + ", " + parameter[0] + ": " + parameter[1];
+		console.log(tmp)
+		info.text(tmp);
 		dataProcessInstance.getData(parameter, index);
 	}
 
