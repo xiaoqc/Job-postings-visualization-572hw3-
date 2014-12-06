@@ -48,7 +48,7 @@ Visulization = function(){
 
 		//decide the radius of node
 		rScale = d3.scale.linear()
-			.range([3,10]);
+			.range([2,8]);
 
 		//return color of edge
 		linkColorScale = d3.scale.linear()         

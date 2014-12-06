@@ -21,10 +21,10 @@ WorldMap = function(svgInstance){
 	function initialize(){
 
     projection = d3.geo.azimuthal()
-        .scale(430)
+        .scale(360)
         .origin([-90, 10])
         .mode("orthographic")
-        .translate([640, (window.innerHeight - 80) / 2]);
+        .translate([500, (window.innerHeight - 80) / 2]);
 
     circle = d3.geo.greatCircle()
         .origin(projection.origin());

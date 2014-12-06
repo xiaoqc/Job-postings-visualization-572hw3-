@@ -472,7 +472,7 @@ dataProcess = function(){
 				console.log("query for question b");
 				field = queryParameter[0];
 				value = queryParameter[1];
-				switch(field) {
+				switch(value) {
 					case "Manpower":
 						urls.push(generateQuery(queryParameter, 5));
 						urls.push(generateQuery(queryParameter, 6));
@@ -508,8 +508,9 @@ dataProcess = function(){
 			case 4:
 				console.log("query for question d");
 				field = queryParameter[0];
-				switch(field) {
-					case "business":
+				value = queryParameter[1];
+				switch(value) {
+					case "commercial":
 						urls.push(generateQuery(queryParameter, 13));
 						urls.push(generateQuery(queryParameter, 14));
 						urls.push(generateQuery(queryParameter, 15));
@@ -561,45 +562,18 @@ dataProcess = function(){
 	}
 
 //***************************************public method************************************************
-
-	// this.getData = function(queryParameter, queryIndex){
-	// 	var url = generateQuery(queryParameter, queryIndex);
-	// 	//url = "data/query1.json";
-	// 	d3.json(url, function(d){
-	// 		var data = modelData(d, queryIndex);
-	// 		//console.log(data);
-	// 		visInstance.visualize(data, queryIndex);
-	// 	})
-	// }
+/////////////////////////////////online execution//////////////////////
+	
+	var res = [];
 	this.getData = function(queryParameter, queryIndex){
-		/*var res = [];
 		var urls = getUrls(queryParameter, queryIndex)
-		console.log("urls is " + urls);
-		//url = "data/query1.json";
 		for (i = 0; i < urls.length; i++) {
 			console.log("fetching data for urls[" + i + "]: " + urls[i]);
-			d3.json(urls[i], function(d){
-				//console.log(d);
-				var data = modelData(d, queryIndex);
-				// console.log("data is:");
-				// console.log(data);
-				res.push(data);
-				console.log("done fetching data for urls[" + i + "]");
-				if (res.length == urls.length) {
-					console.log("res is :");
-					console.log(res);
-					visInstance.visualize(res, queryIndex);
-				}
-			})
-			sleep(300);
-		}*/
-		var res = [];
-		var urls = getURL(queryParameter, queryIndex)
-		for (i = 0; i < urls.length; i++) {
-			console.log("fetching data for urls[" + i + "]: " + urls[i]);
-			d3.json(urls[i], function(d){
-				//console.log(d);
-				var index = 0;
+			$.ajax({
+			  'url': urls[i],
+			  'data': {'wt':'json', 'q':'your search goes here'},
+			  'success': function(d) { console.log(d);
+			  var index = 0;
 				if (queryIndex == 1){
 					if (queryParameter[0] == "company")
 						index = 1;
@@ -619,16 +593,55 @@ dataProcess = function(){
 					index = 13;
 				}
 				var data = modelData(d, index);
-				//console.log(data)
-				res.push(data);
-				if (res.length == urls.length) {
-					//console.log(res.length + " " + urls.length)
-					//console.log("res is :");
-					//console.log(res);
+			  res.push(data);
+			  if (res.length == urls.length) {
+					console.log("res is :");
+					console.log(res);
 					visInstance.visualize(res, queryIndex);
 				}
-			})
+			  },
+			  'dataType': 'jsonp',
+			  'jsonp': 'json.wrf'
+			});
 			sleep(300);
 		}
+		//////////////////////////////////////local execution////////////////////
+		// var res = [];
+		// var urls = getURL(queryParameter, queryIndex)
+		// for (i = 0; i < urls.length; i++) {
+		// 	console.log("fetching data for urls[" + i + "]: " + urls[i]);
+		// 	d3.json(urls[i], function(d){
+		// 		//console.log(d);
+		// 		var index = 0;
+		// 		if (queryIndex == 1){
+		// 			if (queryParameter[0] == "company")
+		// 				index = 1;
+		// 			else if (queryParameter[0] == "jobType")
+		// 				index = 2;
+		// 			else if (queryParameter[0] == "salary"){
+		// 				if (queryParameter[1] == 4000)
+		// 					index = 3;
+		// 				if (queryParameter[2] == 8000)
+		// 					index = 4
+		// 			}
+		// 		} else if (queryIndex == 2){
+		// 			index = 5
+		// 		} else if (queryIndex == 3){
+		// 			index = 9
+		// 		} else if (queryIndex == 4){
+		// 			index = 13;
+		// 		}
+		// 		var data = modelData(d, index);
+		// 		//console.log(data)
+		// 		res.push(data);
+		// 		if (res.length == urls.length) {
+		// 			//console.log(res.length + " " + urls.length)
+		// 			//console.log("res is :");
+		// 			//console.log(res);
+		// 			visInstance.visualize(res, queryIndex);
+		// 		}
+		// 	})
+		// 	sleep(300);
+		// }
 	}
 }
