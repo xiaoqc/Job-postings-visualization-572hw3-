@@ -107,7 +107,7 @@ Visulization = function(){
 		        //return (d.source.group==d.target.group)?10:20;
 		        return 50;                            		//no group option, the link distance is same 
 		    })
-		    .friction(0.95)                            		//[0,1] default 0.9, velocity decay after tick
+		    .friction(0.8)                            		//[0,1] default 0.9, velocity decay after tick
 		    .linkStrength(0)                          		//[0,1]  default 1
 		    .gravity(0)                            			//the force to drag nodes to the enter
 		    .size([windowWidth, windowHeight])
@@ -120,7 +120,6 @@ Visulization = function(){
 		nodeData = [];
 		prePosition = new Map();
 		dataProcessInstance = new dataProcess();
-		document.getElementById("mainContainer").onwheel = mouseScroll;
 	}
 
 	//tick function for nodes
@@ -178,7 +177,7 @@ Visulization = function(){
 
 	//draw component and deal with trasition process
 	//index indicate which day's data is used to execute transition
-	function transit(){
+	function transit1(){
 		node = node.data(nodeData, function(d, i){
 				return d.lon + " " + d.lat;
 			});
@@ -186,12 +185,12 @@ Visulization = function(){
 			.append("circle")
 
 
-		node.filter(function(d, i){
+		/*node.filter(function(d, i){
 			if (i % 20 == 0){
 				d3.select(this)
 					.attr("class", "comet");
 			}
-		})
+		})*/
 
 
 		node.transition()
@@ -247,10 +246,9 @@ Visulization = function(){
 	  	});   //move component to the up of svg
 	};
 
-	//mouse wheel scroll handler
-	function mouseScroll(){
-		//updateCluster();
-		//force.start();
+	//map change event
+	function updateNode(){
+		force.start();
 	}
 
 	//add tail when node moves, the less the second parameter of timer, the smoother the tail
@@ -303,7 +301,7 @@ Visulization = function(){
 
 		//setTimeout(function(d){
 		pos.moveToFront();
-		transit()
+		transit1()
 		//}, 1000);
 	}
 
@@ -336,6 +334,10 @@ Visulization = function(){
 	this.visualize = function(data, index){
 		console.log("start Visulization");
 		generateLayout(data, index);
+	}
+
+	this.mapChangeEvent = function(){
+		updateNode();
 	}
 
 	this.test = function(){
